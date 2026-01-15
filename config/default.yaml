@@ -2,13 +2,31 @@ env:
   grid_size: 10
   max_steps: 200
 train:
+  episodes: 200
   batch_size: 64
+  min_replay_size: 64
+  replay_capacity: 10000
   gamma: 0.99
   lr: 0.0005
   epsilon_start: 1.0
   epsilon_end: 0.05
   epsilon_decay: 0.995
+  target_update: 100
+  eval_every: 0
 reward:
   food: 1.0
   step: -0.01
   death: -1.0
+eval:
+  episodes: 50
+ga:
+  population_size: 6
+  generations: 4
+  elite_k: 2
+  train_episodes: 20
+  bounds:
+    lr: [0.0001, 0.01]
+    epsilon_decay: [0.95, 0.999]
+    reward_food: [0.5, 2.0]
+    reward_step: [-0.05, -0.001]
+    reward_death: [-2.0, -0.5]
