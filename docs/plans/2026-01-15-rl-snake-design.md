@@ -1,7 +1,7 @@
 ---
 title: "Self-Evolving Snake RL Design"
 tags: [thesis, rl, dqn, ga, snake]
-status: draft
+status: approved
 owner: marco
 updated: 2026-01-15
 ---
@@ -31,6 +31,7 @@ updated: 2026-01-15
 - Two training tracks for comparison: baseline DQN and DQN + GA.
 - Runs on CPU by default; optional MPS acceleration for PyTorch.
 - Reproducibility: seed control for env, RNG, and model init.
+- Final evaluation uses 50 episodes per model for comparison.
 
 ### Approach overview
 - State representation: grid channels (snake body, snake head, food) flattened for DQN input.
@@ -38,7 +39,7 @@ updated: 2026-01-15
   - Experience replay buffer.
   - Target network update every N steps.
   - Epsilon-greedy policy with decay.
-  - Optional Double DQN for stability.
+  - Double DQN enabled by default for stability.
 - GA details:
   - Individual = vector of hyperparameters and reward weights.
   - Short training budget per individual, then evaluation score.
@@ -92,5 +93,5 @@ updated: 2026-01-15
 > Dependencies: Python 3.10+, PyTorch (with optional MPS), pygame, numpy, matplotlib.
 > Risks: Training instability or slow convergence. Mitigation: small board (10x10), reward shaping, early stopping, and limited training budgets per GA individual.
 
-> [!todo]
-> Confirm whether to enable Double DQN by default and the evaluation episode count for final comparison.
+> [!note]
+> Decisions: Double DQN enabled by default; evaluation uses 50 episodes per model.
