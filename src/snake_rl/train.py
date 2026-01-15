@@ -1,12 +1,13 @@
+import numpy as np
 import torch
 import torch.nn.functional as F
 
 
 def train_step(agent, optimizer, batch, gamma: float):
-    states = torch.tensor(batch["state"], dtype=torch.float32, device=agent.device)
+    states = torch.tensor(np.array(batch["state"]), dtype=torch.float32, device=agent.device)
     actions = torch.tensor(batch["action"], dtype=torch.int64, device=agent.device).unsqueeze(1)
     rewards = torch.tensor(batch["reward"], dtype=torch.float32, device=agent.device).unsqueeze(1)
-    next_states = torch.tensor(batch["next_state"], dtype=torch.float32, device=agent.device)
+    next_states = torch.tensor(np.array(batch["next_state"]), dtype=torch.float32, device=agent.device)
     dones = torch.tensor(batch["done"], dtype=torch.float32, device=agent.device).unsqueeze(1)
 
     q_values = agent.q_network(states).gather(1, actions)
