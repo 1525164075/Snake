@@ -1,0 +1,14 @@
+env:
+  grid_size: 10
+  max_steps: 200
+train:
+  batch_size: 64
+  gamma: 0.99
+  lr: 0.0005
+  epsilon_start: 1.0
+  epsilon_end: 0.05
+  epsilon_decay: 0.995
+reward:
+  food: 1.0
+  step: -0.01
+  death: -1.0
