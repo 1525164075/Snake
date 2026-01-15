@@ -13,7 +13,8 @@ def main():
     cfg = load_config(args.config)
 
     if args.mode == "train":
-        train_dqn(cfg, device=args.device, seed=args.seed, output_dir=args.output)
+        result = train_dqn(cfg, device=args.device, seed=args.seed, output_dir=args.output)
+        print({"run_dir": result["run_dir"], "model_path": result["model_path"]})
         return
 
     if args.mode == "eval":
