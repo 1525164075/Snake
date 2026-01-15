@@ -55,6 +55,7 @@ def main():
             scores = [h["score"] for h in result["history"]]
             return sum(scores) / len(scores)
 
+        run_dir = make_run_dir(args.output, "ga")
         result = run_ga(
             base,
             bounds,
@@ -63,6 +64,7 @@ def main():
             generations=cfg["ga"]["generations"],
             elite_k=cfg["ga"]["elite_k"],
             seed=args.seed,
+            log_dir=run_dir,
         )
         print(result)
 
