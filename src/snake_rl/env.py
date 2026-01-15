@@ -35,3 +35,26 @@ class SnakeEnv:
         food_r, food_c = self.food
         state[2, food_r, food_c] = 1.0
         return state
+
+    def step(self, action: int):
+        drdc = {0: (-1, 0), 1: (0, 1), 2: (1, 0), 3: (0, -1)}
+        dr, dc = drdc[action]
+        head_r, head_c = self.snake[0]
+        new_head = (head_r + dr, head_c + dc)
+
+        if not (0 <= new_head[0] < self.grid_size and 0 <= new_head[1] < self.grid_size):
+            return self._encode_state(), -1.0, True, {"ate": False}
+
+        if new_head in self.snake:
+            return self._encode_state(), -1.0, True, {"ate": False}
+
+        self.snake.insert(0, new_head)
+        ate = new_head == self.food
+        if ate:
+            reward = 1.0
+            self._spawn_food()
+        else:
+            self.snake.pop()
+            reward = -0.01
+
+        return self._encode_state(), reward, False, {"ate": ate}
