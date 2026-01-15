@@ -2,15 +2,15 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Add CSV logging and PNG curve outputs for training, evaluation, and GA runs.
+**Goal:** 为训练/评估/GA 过程增加 CSV 日志与 PNG 曲线输出。
 
-**Architecture:** Introduce a small logging utility module (CSV + Matplotlib Agg), extend the trainer to emit per-episode metrics, extend GA loop to log per-generation metrics, and wire CLI to create run directories and write plots.
+**Architecture:** 新增日志工具模块（CSV + Matplotlib Agg），训练过程记录每回合指标并绘图，GA 每代记录最佳/平均适应度并绘图，CLI 负责创建运行目录并输出结果路径。
 
 **Tech Stack:** Python 3.9+, Matplotlib (Agg), NumPy, CSV, PyTorch.
 
 ---
 
-### Task 1: Logging utilities (CSV + line plots)
+### Task 1: 日志工具（CSV + 折线图）
 
 **Files:**
 - Create: `src/snake_rl/logging_utils.py`
@@ -102,7 +102,7 @@ git commit -m "feat: add logging utilities for csv and plots"
 
 ---
 
-### Task 2: Training logs and plots
+### Task 2: 训练日志与曲线输出
 
 **Files:**
 - Modify: `src/snake_rl/trainer.py`
@@ -208,7 +208,7 @@ git commit -m "feat: add training csv logs and plots"
 
 ---
 
-### Task 3: Evaluation logs and plots
+### Task 3: 评估日志与曲线输出
 
 **Files:**
 - Modify: `src/snake_rl/logging_utils.py`
@@ -272,7 +272,7 @@ git commit -m "feat: add eval csv logs and plots"
 
 ---
 
-### Task 4: GA logs and plots
+### Task 4: GA 日志与曲线输出
 
 **Files:**
 - Modify: `src/snake_rl/evolve.py`
@@ -311,6 +311,7 @@ Expected: FAIL (missing logging)
 ```python
 # src/snake_rl/evolve.py (additions)
 from snake_rl.logging_utils import init_csv, append_csv, save_line_plot
+
 
 def run_ga(..., log_dir: Optional[str] = None) -> dict:
     ...
@@ -352,7 +353,7 @@ git commit -m "feat: add ga csv logs and plots"
 
 ---
 
-### Task 5: Training plots wiring and return payload
+### Task 5: 训练输出路径回显
 
 **Files:**
 - Modify: `scripts/train.py`
