@@ -4,6 +4,7 @@ from snake_rl.trainer import train_dqn, evaluate_policy, build_env
 from snake_rl.networks import QNetwork
 from snake_rl.agent import DQNAgent
 from snake_rl.evolve import run_ga
+from snake_rl.logging_utils import log_eval_metrics, make_run_dir
 
 
 def main():
@@ -25,6 +26,8 @@ def main():
             agent.q_network.load_state_dict(torch.load(args.checkpoint, map_location=args.device))
             agent.update_target()
         metrics = evaluate_policy(env, agent, episodes=cfg["eval"]["episodes"], epsilon=0.0)
+        run_dir = make_run_dir(args.output, "eval")
+        log_eval_metrics(run_dir, metrics)
         print(metrics)
         return
 

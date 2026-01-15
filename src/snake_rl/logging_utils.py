@@ -37,3 +37,26 @@ def save_line_plot(path: str, x, y, title: str, xlabel: str, ylabel: str) -> Non
     fig.tight_layout()
     fig.savefig(path)
     plt.close(fig)
+
+
+def log_eval_metrics(run_dir: str, metrics: dict) -> None:
+    fields = ["episodes", "avg_reward", "avg_steps", "avg_score"]
+    path = os.path.join(run_dir, "eval_metrics.csv")
+    init_csv(path, fields)
+    append_csv(path, fields, metrics)
+    save_line_plot(
+        os.path.join(run_dir, "eval_reward.png"),
+        [1],
+        [metrics["avg_reward"]],
+        "Eval Reward",
+        "Eval",
+        "Reward",
+    )
+    save_line_plot(
+        os.path.join(run_dir, "eval_score.png"),
+        [1],
+        [metrics["avg_score"]],
+        "Eval Score",
+        "Eval",
+        "Score",
+    )
