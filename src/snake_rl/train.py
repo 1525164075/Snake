@@ -12,7 +12,13 @@ def train_step(agent, optimizer, batch, gamma: float):
 
     q_values = agent.q_network(states).gather(1, actions)
     with torch.no_grad():
-        next_q = agent.q_network(next_states).max(1, keepdim=True)[0]
+        if getattr(agent, "double_dqn", False) and getattr(agent, "target_network", None) is not None:
+            next_actions = agent.q_network(next_states).argmax(dim=1, keepdim=True)
+            next_q = agent.target_network(next_states).gather(1, next_actions)
+        elif getattr(agent, "target_network", None) is not None:
+            next_q = agent.target_network(next_states).max(1, keepdim=True)[0]
+        else:
+            next_q = agent.q_network(next_states).max(1, keepdim=True)[0]
         target = rewards + gamma * (1 - dones) * next_q
 
     loss = F.mse_loss(q_values, target)
