@@ -39,6 +39,9 @@ def play_episodes(env, agent, episodes=1, fps=10, render_mode="human", scale=20)
         state = env.reset()
         done = False
         while not done:
+            action = agent.select_action(state)
+            state, _, done, _ = env.step(action)
+            env.render(mode=render_mode, scale=scale)
             if render_mode == "human":
                 try:
                     if not _pump_events():
@@ -46,9 +49,6 @@ def play_episodes(env, agent, episodes=1, fps=10, render_mode="human", scale=20)
                         return False
                 except ImportError as exc:
                     raise ImportError("pygame is required for play mode") from exc
-            action = agent.select_action(state)
-            state, _, done, _ = env.step(action)
-            env.render(mode=render_mode, scale=scale)
             if delay > 0:
                 time.sleep(delay)
     env.close()
