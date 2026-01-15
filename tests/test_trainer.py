@@ -1,5 +1,7 @@
 import os
 
+import torch
+
 from snake_rl.agent import DQNAgent
 from snake_rl.env import SnakeEnv
 from snake_rl.networks import QNetwork
@@ -37,3 +39,10 @@ def test_evaluate_policy_returns_metrics():
     metrics = evaluate_policy(env, agent, episodes=2, epsilon=0.0)
     assert metrics["episodes"] == 2
     assert metrics["avg_steps"] > 0
+
+
+def test_qnetwork_uses_conv_and_outputs_actions():
+    net = QNetwork(input_shape=(3, 5, 5), num_actions=4)
+    assert any("Conv2d" in type(module).__name__ for module in net.modules())
+    out = net(torch.zeros(1, 3, 5, 5))
+    assert out.shape == (1, 4)
