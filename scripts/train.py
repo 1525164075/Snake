@@ -5,6 +5,7 @@ from snake_rl.networks import QNetwork
 from snake_rl.agent import DQNAgent
 from snake_rl.evolve import run_ga
 from snake_rl.logging_utils import log_eval_metrics, make_run_dir
+from snake_rl.play import prepare_play, play_episodes
 
 
 def main():
@@ -30,6 +31,21 @@ def main():
         run_dir = make_run_dir(args.output, "eval")
         log_eval_metrics(run_dir, metrics)
         print(metrics)
+        return
+
+    if args.mode == "play":
+        try:
+            env, agent = prepare_play(
+                cfg,
+                checkpoint=args.checkpoint,
+                device=args.device,
+                seed=args.seed,
+                max_steps=args.max_steps,
+            )
+        except (ValueError, FileNotFoundError) as exc:
+            print(exc)
+            return
+        play_episodes(env, agent, episodes=args.episodes, fps=args.fps, render_mode="human", scale=args.scale)
         return
 
     if args.mode == "ga":
